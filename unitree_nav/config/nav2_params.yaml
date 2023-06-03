@@ -42,7 +42,7 @@ amcl:
 bt_navigator:
   ros__parameters:
     use_sim_time: True
-    global_frame: velodyne
+    global_frame: map
     robot_base_frame: base_link
     odom_topic: /odom
     bt_loop_duration: 10
@@ -236,7 +236,7 @@ global_costmap:
     ros__parameters:
       update_frequency: 1.0
       publish_frequency: 1.0
-      global_frame: velodyne
+      global_frame: base_link
       robot_base_frame: base_link
       use_sim_time: True
       footprint: "[ [0.410, 0.350], [0.410, -0.350], [-0.410, -0.350], [-0.410, 0.350] ]"
