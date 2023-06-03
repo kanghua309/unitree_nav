@@ -1,4 +1,4 @@
- Example:
+# Example:
 #   $ ros2 launch rslidar_sdk start.py
 #
 #   SLAM:
@@ -78,7 +78,7 @@ def generate_launch_description():
                 'use_sim_time':LaunchConfiguration('use_sim_time'),
             }],
             remappings=[
-                ('scan_cloud', '/rslidar_points')
+                ('scan_cloud', '/velodyne_points')
             ],
             arguments=[
                 'Icp/PointToPlane', 'true',
@@ -109,7 +109,7 @@ def generate_launch_description():
             package='rtabmap_util', executable='point_cloud_assembler', output='screen',
             parameters=[{
                 'max_clouds':10,
-                'fixed_frame_id':'velodyne',
+                'fixed_frame_id':'',
                 'use_sim_time':LaunchConfiguration('use_sim_time'),
             }],
             remappings=[
@@ -119,7 +119,7 @@ def generate_launch_description():
         Node(
             package='rtabmap_slam', executable='rtabmap', output='screen',
             parameters=[{
-                'frame_id':'velodyne',
+                'frame_id':'base_laser',
                 'subscribe_depth':False,
                 'subscribe_rgb':False,
                 'subscribe_scan_cloud':True,
@@ -128,7 +128,7 @@ def generate_launch_description():
                 'use_sim_time':LaunchConfiguration('use_sim_time'),
             }],
             remappings=[
-                ('scan_cloud', '/velodyne_points/pointcloud2')
+                ('scan_cloud', '/velodyne_points')
             ],
             arguments=[
                 TernaryTextSubstitution(IfCondition(LaunchConfiguration('restart_map')), '-d', ''),
@@ -162,9 +162,9 @@ def generate_launch_description():
                 ],
             ]), 
         Node(
-            package='rtabmap_viz', executable='rtabmapviz', output='screen',
+            package='rtabmap_viz', executable='rtabmap_viz', output='screen',
             parameters=[{
-                'frame_id':'velodyne',
+                'frame_id':'base_laser',
                 'odom_frame_id':'odom',
                 'subscribe_odom_info':True,
                 'subscribe_scan_cloud':True,
