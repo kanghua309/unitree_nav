@@ -1,4 +1,4 @@
-# Example:
+ Example:
 #   $ ros2 launch rslidar_sdk start.py
 #
 #   SLAM:
@@ -68,7 +68,7 @@ def generate_launch_description():
 
         # Nodes to launch
         Node(
-            package='rtabmap_ros', executable='icp_odometry', output='screen',
+            package='rtabmap_odom', executable='icp_odometry', output='screen',
             parameters=[{
                 'frame_id':'base_link',
                 'odom_frame_id':'odom',
@@ -106,10 +106,10 @@ def generate_launch_description():
             ),
             
         Node(
-            package='rtabmap_ros', executable='point_cloud_assembler', output='screen',
+            package='rtabmap_util', executable='point_cloud_assembler', output='screen',
             parameters=[{
                 'max_clouds':10,
-                'fixed_frame_id':'',
+                'fixed_frame_id':'velodyne',
                 'use_sim_time':LaunchConfiguration('use_sim_time'),
             }],
             remappings=[
@@ -117,9 +117,9 @@ def generate_launch_description():
             ]),
             
         Node(
-            package='rtabmap_ros', executable='rtabmap', output='screen',
+            package='rtabmap_slam', executable='rtabmap', output='screen',
             parameters=[{
-                'frame_id':'base_laser',
+                'frame_id':'velodyne',
                 'subscribe_depth':False,
                 'subscribe_rgb':False,
                 'subscribe_scan_cloud':True,
@@ -128,7 +128,7 @@ def generate_launch_description():
                 'use_sim_time':LaunchConfiguration('use_sim_time'),
             }],
             remappings=[
-                ('scan_cloud', 'assembled_cloud')
+                ('scan_cloud', '/velodyne_points/pointcloud2')
             ],
             arguments=[
                 TernaryTextSubstitution(IfCondition(LaunchConfiguration('restart_map')), '-d', ''),
@@ -162,9 +162,9 @@ def generate_launch_description():
                 ],
             ]), 
         Node(
-            package='rtabmap_ros', executable='rtabmapviz', output='screen',
+            package='rtabmap_viz', executable='rtabmapviz', output='screen',
             parameters=[{
-                'frame_id':'base_laser',
+                'frame_id':'velodyne',
                 'odom_frame_id':'odom',
                 'subscribe_odom_info':True,
                 'subscribe_scan_cloud':True,

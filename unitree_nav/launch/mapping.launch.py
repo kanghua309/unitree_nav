@@ -61,13 +61,12 @@ def generate_launch_description():
             arguments=['--frame-id', 'base_link', '--child-frame-id', 'base_laser'],
             condition=IfCondition(LaunchConfiguration('publish_static_tf'))
         ),
-
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 PathJoinSubstitution([
-                    FindPackageShare('rslidar_sdk'),
+                    FindPackageShare('velodyne'),
                     'launch',
-                    'start.py'
+                    'velodyne-all-nodes-VLP16-launch.py'
                 ])
             ),
             launch_arguments=[
