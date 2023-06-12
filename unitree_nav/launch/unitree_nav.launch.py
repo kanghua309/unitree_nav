@@ -2,7 +2,7 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
-from launch.conditions import IfCondition
+from launch.conditions import IfCondition, UnlessCondition
 from launch_ros.substitutions import FindPackageShare
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
@@ -98,6 +98,26 @@ def generate_launch_description():
                     ])
                 ),
             ],
+        ),
+
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                PathJoinSubstitution([
+                    FindPackageShare('nav2_bringup'),
+                    'launch',
+                    'navigation_launch.py'
+                ])
+            ),
+            launch_arguments=[
+                ('params_file',
+                    PathJoinSubstitution([
+                        FindPackageShare('unitree_nav'),
+                        'config',
+                        'nav2_params_guide_dog.yaml'
+                    ])
+                ),
+            ],
+            condition=IfCondition(LaunchConfiguration('use_guide_dog_params')),
         ),
 
         IncludeLaunchDescription(
