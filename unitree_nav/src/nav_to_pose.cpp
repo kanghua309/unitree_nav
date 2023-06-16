@@ -208,7 +208,7 @@ private:
      std::shared_future< rclcpp_action::ClientGoalHandle<nav2_msgs::action::NavigateToPose>::SharedPtr> goal_handle
   ) {
     goal_response_received_ = true;
-    goal_handle_ = *goal_handle;
+    goal_handle_ = goal_handle.get();
     RCLCPP_INFO_STREAM(get_logger(), "Goal response");
   }
 
