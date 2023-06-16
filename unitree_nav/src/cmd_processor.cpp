@@ -1,6 +1,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_srvs/srv/empty.hpp"
-#include "geometry_msgs/msg/twist.hpp"
+//#include "geometry_msgs/msg/twist.hpp"
+#include "geometry_msgs/msg/twist.h"
 #include "ros2_unitree_legged_msgs/msg/high_cmd.hpp"
 #include "unitree_nav_interfaces/srv/set_body_rpy.hpp"
 
@@ -211,10 +212,10 @@ private:
     reset_counter_ = 0;
   }
 
-  void cmd_vel_callback(const geometry_msgs::msg::Twist & msg)
+  void cmd_vel_callback(const geometry_msgs::msg::Twist::SharedPtr msg)
   {
     //Store received cmd_vel
-    cmd_vel_ = msg;
+    cmd_vel_ = *msg;
 
     //reset timeout
     cmd_vel_counter_ = 0ms;
