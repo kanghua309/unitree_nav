@@ -12,10 +12,11 @@ find_package(rosidl_default_generators REQUIRED)
 ament_export_dependencies(rosidl_default_runtime)
 
 rosidl_generate_interfaces(
-  ${PROJECT_NAME}_srv
+  #${PROJECT_NAME}_srv
+  ${PROJECT_NAME}
   "srv/SetBodyRPY.srv"
   "srv/NavToPose.srv"
-  LIBRARY_NAME ${PROJECT_NAME}
+  #LIBRARY_NAME ${PROJECT_NAME}
   DEPENDENCIES
   geometry_msgs
 )
