@@ -221,7 +221,7 @@ private:
 
     if (feedback_) {
       double roll = 0.0, pitch = 0.0, yaw = 0.0;
-      #auto [roll, pitch, yaw] = quaternion_to_rpy(feedback_->current_pose.pose.orientation);
+      //auto [roll, pitch, yaw] = quaternion_to_rpy(feedback_->current_pose.pose.orientation);
       std::tie(roll, pitch, yaw) = quaternion_to_rpy(feedback_->current_pose.pose.orientation);
 
       RCLCPP_INFO_STREAM(get_logger(), "x = " << feedback_->current_pose.pose.position.x
