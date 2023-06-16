@@ -10,7 +10,8 @@
 #include "geometry_msgs/msg/quaternion.hpp"
 #include "tf2/LinearMath/Quaternion.h"
 #include "tf2/LinearMath/Matrix3x3.h"
-#include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
+//#include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
+#include "tf2_geometry_msgs/tf2_geometry_msgs.h"
 #include "nav2_msgs/action/navigate_to_pose.hpp"
 #include "unitree_nav_interfaces/srv/nav_to_pose.hpp"
 
@@ -204,10 +205,10 @@ private:
   }
 
   void goal_response_callback(
-    const rclcpp_action::ClientGoalHandle<nav2_msgs::action::NavigateToPose>::SharedPtr & goal_handle
+     std::shared_future< rclcpp_action::ClientGoalHandle<nav2_msgs::action::NavigateToPose>::SharedPtr> goal_handle
   ) {
     goal_response_received_ = true;
-    goal_handle_ = goal_handle;
+    goal_handle_ = *goal_handle;
     RCLCPP_INFO_STREAM(get_logger(), "Goal response");
   }
 
@@ -219,7 +220,9 @@ private:
     feedback_ = feedback;
 
     if (feedback_) {
-      auto [roll, pitch, yaw] = quaternion_to_rpy(feedback_->current_pose.pose.orientation);
+      double roll = 0.0, pitch = 0.0, yaw = 0.0;
+      #auto [roll, pitch, yaw] = quaternion_to_rpy(feedback_->current_pose.pose.orientation);
+      std::tie(roll, pitch, yaw) = quaternion_to_rpy(feedback_->current_pose.pose.orientation);
 
       RCLCPP_INFO_STREAM(get_logger(), "x = " << feedback_->current_pose.pose.position.x
                                   << ", y = " << feedback_->current_pose.pose.position.y
