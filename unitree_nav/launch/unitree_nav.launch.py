@@ -37,6 +37,12 @@ def generate_launch_description():
             choices=['true','false'],
             description='Delete previous map and restart'
         ),
+        DeclareLaunchArgument(
+            name='use_guide_dog_params',
+            default_value='false',
+            choices=['true','false'],
+            description='Use guide dog params for Nav2'
+        ),
 
         Node(
             package='rviz2',
