@@ -128,7 +128,7 @@ def generate_launch_description():
                 'use_sim_time':LaunchConfiguration('use_sim_time'),
             }],
             remappings=[
-                ('scan_cloud', '/velodyne_points')
+                ('scan_cloud', '/assembled_cloud')
             ],
             arguments=[
                 TernaryTextSubstitution(IfCondition(LaunchConfiguration('restart_map')), '-d', ''),
