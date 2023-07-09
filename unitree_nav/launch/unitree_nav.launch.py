@@ -104,6 +104,7 @@ def generate_launch_description():
                     ])
                 ),
             ],
+            condition=UnlessCondition(LaunchConfiguration('use_guide_dog_params')),
         ),
 
         IncludeLaunchDescription(
