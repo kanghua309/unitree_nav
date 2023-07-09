@@ -99,7 +99,8 @@ def generate_launch_description():
                 '--ros-args',
                 '--log-level',
                 [
-                    TextSubstitution(text='icp_odometry:='),
+                    #TextSubstitution(text='icp_odometry:='),
+                    TextSubstitution(text=''),
                     LaunchConfiguration('icp_odometry_log_level'),
                 ],
             ]
@@ -157,7 +158,8 @@ def generate_launch_description():
                 '--ros-args',
                 '--log-level',
                 [
-                    TextSubstitution(text='rtabmap:='),
+                    #TextSubstitution(text='rtabmap:='),
+                    TextSubstitution(text=''),
                     LaunchConfiguration('rtabmap_log_level'),
                 ],
             ]), 
