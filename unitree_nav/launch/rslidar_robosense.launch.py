@@ -155,6 +155,7 @@ def generate_launch_description():
                 'Icp/Strategy', '1',
                 'Icp/OutlierRatio', '0.7',
                 'Icp/CorrespondenceRatio', '0.2',
+                'Grid/Sensor','true', #<!-- occupancy grid from lidar --> 
                 '--ros-args',
                 '--log-level',
                 [
