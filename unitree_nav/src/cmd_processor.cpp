@@ -88,6 +88,16 @@ public:
       std::bind(&CmdProcessor::reset_state_callback, this,
                 std::placeholders::_1, std::placeholders::_2)
     );
+    srv_stand_in_force_ = create_service<std_srvs::srv::Empty>(
+      "stand_in_force",
+      std::bind(&CmdProcessor::stand_in_force_callback, this,
+                std::placeholders::_1, std::placeholders::_2)
+    );
+    srv_walk_forward_ = create_service<std_srvs::srv::Empty>(
+      "walk_forward",
+      std::bind(&CmdProcessor::walk_forword_callback, this,
+                std::placeholders::_1, std::placeholders::_2)
+    );
     srv_stand_up_ = create_service<std_srvs::srv::Empty>(
       "stand_up",
       std::bind(&CmdProcessor::stand_up_callback, this,
@@ -157,6 +167,8 @@ private:
   rclcpp::Publisher<ros2_unitree_legged_msgs::msg::HighCmd>::SharedPtr pub_high_cmd_;
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr sub_cmd_vel_;
   rclcpp::Service<std_srvs::srv::Empty>::SharedPtr srv_reset_state_;
+  rclcpp::Service<std_srvs::srv::Empty>::SharedPtr srv_stand_in_force_;
+  rclcpp::Service<std_srvs::srv::Empty>::SharedPtr srv_walk_forward_;
   rclcpp::Service<std_srvs::srv::Empty>::SharedPtr srv_stand_up_;
   rclcpp::Service<std_srvs::srv::Empty>::SharedPtr srv_recover_stand_;
   rclcpp::Service<std_srvs::srv::Empty>::SharedPtr srv_lay_down_;
@@ -239,6 +251,30 @@ private:
     std::shared_ptr<std_srvs::srv::Empty::Response>
   ) {
     reset_cmd_vel();
+    reset_state(); //Reset state after command is sent
+  }
+
+   //add Standing in  force  
+  void stand_in_force_callback(
+    const std::shared_ptr<std_srvs::srv::Empty::Request>,
+    std::shared_ptr<std_srvs::srv::Empty::Response>
+  ) {
+    reset_cmd_vel();
+    high_cmd_.mode = to_value(Go1Mode::force_stand);
+    reset_state(); //Reset state after command is sent
+  }
+
+  //add walk in   
+  void walk_forword_callback(
+    const std::shared_ptr<std_srvs::srv::Empty::Request>,
+    std::shared_ptr<std_srvs::srv::Empty::Response>
+  ) {
+    reset_cmd_vel();
+    high_cmd_.mode = to_value(Go1Mode::target_velocity_walking);
+    high_cmd_.gait_type = to_value(Go1Gait::trot);
+    cmd_vel_.linear.x = 0.2;
+    cmd_vel_.linear.y = 0.0;
+    cmd_vel_.angular.z = 0.0;
     reset_state(); //Reset state after command is sent
   }
 
